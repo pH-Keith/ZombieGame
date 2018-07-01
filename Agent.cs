@@ -14,8 +14,8 @@ namespace ZombieGame
         /// True Equal Zombie, False Equal Human
         /// </summary>
         public bool Infected { get; set; } = false;
-        private int X;
-        private int Y;
+        public int X;
+        public int Y;
         private int Id { get; set; } = -1;
         public bool Moved = false;
         public bool Exists { get; set; }
@@ -134,17 +134,20 @@ namespace ZombieGame
                         }
                         break;
                     case 'q':
-                        if (Y != 0 && X != 0 && grid.tiles[this.X - 1, this.Y - 1].Agents.Exists == false)
+                        if (Y != 0 && X != 0)
                         {
-                            if (grid.tiles[this.X - 1, this.Y - 1].Agents.Moved == false)
+                            if (grid.tiles[this.X - 1, this.Y - 1].Agents.Exists == false)
                             {
-                                Y--;
-                                X--;
-                                Selected = false;
-                                Moved = true;
-                                grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                Exists = false;
-                                i = true;
+                                if (grid.tiles[this.X - 1, this.Y - 1].Agents.Moved == false)
+                                {
+                                    Y--;
+                                    X--;
+                                    Selected = false;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
                             }
                         }
                         else
@@ -154,17 +157,22 @@ namespace ZombieGame
                         }
                         break;
                     case 'z':
-                        if (Y != grid.Data.MaxY && X != 0 && grid.tiles[this.X - 1, this.Y + 1].Agents.Exists == false)
+                        if (Y != grid.Data.MaxY && X != 0)
                         {
-                            if (grid.tiles[this.X - 1, this.Y + 1].Agents.Moved == false)
+                            if (grid.tiles[this.X - 1, this.Y + 1].Agents.Exists == false)
                             {
-                                Y++;
-                                X--;
-                                Selected = false;
-                                Moved = true;
-                                grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                Exists = false;
-                                i = true;
+                                {
+                                    if (grid.tiles[this.X - 1, this.Y + 1].Agents.Moved == false)
+                                    {
+                                        Y++;
+                                        X--;
+                                        Selected = false;
+                                        Moved = true;
+                                        grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        Exists = false;
+                                        i = true;
+                                    }
+                                }
                             }
                         }
                         else
@@ -174,16 +182,21 @@ namespace ZombieGame
                         }
                         break;
                     case 'a':
-                        if (X != 0 && grid.tiles[this.X - 1, this.Y].Agents.Exists == false)
+                        if (X != 0)
                         {
-                            if (grid.tiles[this.X - 1, this.Y].Agents.Moved == false)
+                            if (grid.tiles[this.X - 1, this.Y].Agents.Exists == false)
                             {
-                                X--;
-                                Selected = false;
-                                Moved = true;
-                                grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                Exists = false;
-                                i = true;
+                                {
+                                    if (grid.tiles[this.X - 1, this.Y].Agents.Moved == false)
+                                    {
+                                        X--;
+                                        Selected = false;
+                                        Moved = true;
+                                        grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        Exists = false;
+                                        i = true;
+                                    }
+                                }
                             }
                         }
                         else
@@ -193,16 +206,22 @@ namespace ZombieGame
                         }
                         break;
                     case 'x':
-                        if (Y != grid.Data.MaxY - 1 && grid.tiles[this.X, this.Y + 1].Agents.Exists == false)
+                        if (Y != grid.Data.MaxY - 1)
                         {
-                            if (grid.tiles[this.X, this.Y + 1].Agents.Moved == false)
+                            if (grid.tiles[this.X, this.Y + 1].Agents.Exists == false)
                             {
-                                Y++;
-                                Selected = false;
-                                Moved = true;
-                                grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                Exists = false;
-                                i = true;
+
+                                {
+                                    if (grid.tiles[this.X, this.Y + 1].Agents.Moved == false)
+                                    {
+                                        Y++;
+                                        Selected = false;
+                                        Moved = true;
+                                        grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        Exists = false;
+                                        i = true;
+                                    }
+                                }
                             }
                         }
                         else
@@ -212,17 +231,22 @@ namespace ZombieGame
                         }
                         break;
                     case 'c':
-                        if (Y != grid.Data.MaxY && X != grid.Data.MaxX && grid.tiles[this.X + 1, this.Y + 1].Agents.Exists == false)
+                        if (Y != grid.Data.MaxY && X != grid.Data.MaxX)
                         {
-                            if (grid.tiles[this.X + 1, this.Y + 1].Agents.Moved == false)
+                            if (grid.tiles[this.X + 1, this.Y + 1].Agents.Exists == false)
                             {
-                                Y++;
-                                X++;
-                                Selected = false;
-                                Moved = true;
-                                grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                Exists = false;
-                                i = true;
+                                {
+                                    if (grid.tiles[this.X + 1, this.Y + 1].Agents.Moved == false)
+                                    {
+                                        Y++;
+                                        X++;
+                                        Selected = false;
+                                        Moved = true;
+                                        grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        Exists = false;
+                                        i = true;
+                                    }
+                                }
                             }
                         }
                         else
@@ -232,17 +256,22 @@ namespace ZombieGame
                         }
                         break;
                     case 'e':
-                        if (Y != 0 && X != grid.Data.MaxX && grid.tiles[this.X + 1, this.Y - 1].Agents.Exists == false)
+                        if (Y != 0 && X != grid.Data.MaxX)
                         {
-                            if (grid.tiles[this.X + 1, this.Y - 1].Agents.Moved == false)
+                            if (grid.tiles[this.X + 1, this.Y - 1].Agents.Exists == false)
                             {
-                                Y--;
-                                X++;
-                                Selected = false;
-                                Moved = true;
-                                grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                Exists = false;
-                                i = true;
+                                {
+                                    if (grid.tiles[this.X + 1, this.Y - 1].Agents.Moved == false)
+                                    {
+                                        Y--;
+                                        X++;
+                                        Selected = false;
+                                        Moved = true;
+                                        grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        Exists = false;
+                                        i = true;
+                                    }
+                                }
                             }
                         }
                         else
@@ -252,16 +281,21 @@ namespace ZombieGame
                         }
                         break;
                     case 'd':
-                        if (X != grid.Data.MaxX - 1 && grid.tiles[this.X + 1, this.Y].Agents.Exists == false)
+                        if (X != grid.Data.MaxX - 1)
                         {
-                            if (grid.tiles[this.X + 1, this.Y].Agents.Moved == false)
+                            if (grid.tiles[this.X + 1, this.Y].Agents.Exists == false)
                             {
-                                X++;
-                                Selected = false;
-                                Moved = true;
-                                grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                Exists = false;
-                                i = true;
+                                {
+                                    if (grid.tiles[this.X + 1, this.Y].Agents.Moved == false)
+                                    {
+                                        X++;
+                                        Selected = false;
+                                        Moved = true;
+                                        grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        Exists = false;
+                                        i = true;
+                                    }
+                                }
                             }
                         }
                         else
@@ -334,12 +368,166 @@ namespace ZombieGame
             }
             return tmp;
         }
-
+        /*
         public Grid AIMovement(Grid grid)
         {
+            this.Moved = true;
+            bool attacked = false;
+            // CHANGE ALL OF THESE ABSOLUTE VALUES LATER.
+            for (bool i = false; i == false;)
+            {
+                if (Infected == true)
+                {
+                    for (int p = -1; p <= 1; p++)
+                    {
+                        if (X == grid.Data.MaxX - 1 && p == 1)
+                        {
+                        }
+                        else if (X == 0 && p == -1)
+                        {
+                        }
+                        else
+                        {
+                            for (int l = -1; l <= 1; l++)
+                            {
+                                if (Y == grid.Data.MaxY - 1 && l == 1)
+                                {
+                                }
+                                else if (Y == 0 && l == -1)
+                                {
+                                }
+                                else if (Y == 0 && l == 0)
+                                {
 
+                                }
+                                else if (grid.tiles[X + p, Y + l].Agents.Infected == false && grid.tiles[X + p, Y + l].Agents.Exists)
+                                {
+                                    grid.tiles[X + p, Y + l].Agents.Zombify();
+                                    attacked = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                int tmpx = this.X;
+                int tmpy = this.Y;
+                if (!attacked)
+                {
+                    switch (grid.random.Next(1, 8))
+                    {
+                        case '1':
+                            if (Y != 0)
+                            {
+                                if (grid.tiles[this.X, this.Y - 1].Agents.Moved == false && grid.tiles[this.X, this.Y - 1].Agents.Exists == false)
+                                {
+                                    Y--;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                        case '2':
+                            if (Y != 0 && X != 0 && grid.tiles[this.X - 1, this.Y - 1].Agents.Exists == false)
+                            {
+                                if (grid.tiles[this.X - 1, this.Y - 1].Agents.Moved == false)
+                                {
+                                    Y--;
+                                    X--;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                        case '3':
+                            if (Y != grid.Data.MaxY && X != 0 && grid.tiles[this.X - 1, this.Y + 1].Agents.Exists == false)
+                            {
+                                if (grid.tiles[this.X - 1, this.Y + 1].Agents.Moved == false)
+                                {
+                                    Y++;
+                                    X--;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                        case '4':
+                            if (X != 0 && grid.tiles[this.X - 1, this.Y].Agents.Exists == false)
+                            {
+                                if (grid.tiles[this.X - 1, this.Y].Agents.Moved == false)
+                                {
+                                    X--;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                        case '5':
+                            if (Y != grid.Data.MaxY - 1 && grid.tiles[this.X, this.Y + 1].Agents.Exists == false)
+                            {
+                                if (grid.tiles[this.X, this.Y + 1].Agents.Moved == false)
+                                {
+                                    Y++;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                        case '6':
+                            if (Y != grid.Data.MaxY && X != grid.Data.MaxX && grid.tiles[this.X + 1, this.Y + 1].Agents.Exists == false)
+                            {
+                                if (grid.tiles[this.X + 1, this.Y + 1].Agents.Moved == false)
+                                {
+                                    Y++;
+                                    X++;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                        case '7':
+                            if (Y != 0 && X != grid.Data.MaxX && grid.tiles[this.X + 1, this.Y - 1].Agents.Exists == false)
+                            {
+                                if (grid.tiles[this.X + 1, this.Y - 1].Agents.Moved == false)
+                                {
+                                    Y--;
+                                    X++;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                        case '8':
+                            if (X != grid.Data.MaxX - 1 && grid.tiles[this.X + 1, this.Y].Agents.Exists == false)
+                            {
+                                if (grid.tiles[this.X + 1, this.Y].Agents.Moved == false)
+                                {
+                                    X++;
+                                    Moved = true;
+                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    Exists = false;
+                                    i = true;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
             return grid;
-        }
+        } */
         public bool Confirm()
         {
             bool check = false;

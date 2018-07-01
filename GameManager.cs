@@ -20,6 +20,7 @@ namespace ZombieGame
         {
 
         }
+        List<Agent> AIList = new List<Agent>();
         public Grid ManageGame(Renderer renderer)
         {
             if (!auto)
@@ -40,7 +41,7 @@ namespace ZombieGame
                     auto = true;
                 }
             }
-            if(auto == false)
+            if(!auto)
             {
                 for (int i = 0; i < data.MaxX; i++)
                 {
@@ -51,12 +52,15 @@ namespace ZombieGame
                             grid.Copy(grid.tiles[j, i].Agents.Movement(grid, renderer));
                             grid.tiles[j, i].Agents.Moved = false;
                         }
-                        else
+                        else if(grid.tiles[j, i].Agents.Exists)
                         {
-                            grid = grid.tiles[j, i].Agents.AIMovement(grid);
+                            AIList.Add(grid.tiles[j, i].Agents);
                         }
                     }
                 }
+                AIMovement AI = new AIMovement();
+                AI.AIMovementent(grid, AIList);
+
             }
             else
             {
@@ -64,12 +68,14 @@ namespace ZombieGame
                 {
                     for (int j = 0; j < data.MaxY; j++)
                     {
-                        if (grid.tiles[j, i].Agents.Moved == false)
+                        if (grid.tiles[j, i].Agents.Moved == false && grid.tiles[j, i].Agents.Exists)
                         {
-                            grid = grid.tiles[j, i].Agents.AIMovement(grid);
+                            AIList.Add(grid.tiles[j, i].Agents);
                         }
                     }
                 }
+                AIMovement AI = new AIMovement();
+                AI.AIMovementent(grid, AIList);
                 for (int i = 0; i < data.MaxX; i++)
                 {
                     for (int j = 0; j < data.MaxY; j++)
@@ -77,8 +83,9 @@ namespace ZombieGame
                         grid.tiles[j, i].Agents.Moved = false;
                     }
                 }
+                Console.ReadKey();
             }
-            
+            AIList.Clear();
         return grid;
         }
     }

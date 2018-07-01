@@ -8,7 +8,7 @@ namespace ZombieGame
 {
     class Grid : DataStoring
     {
-        Random random = new Random();
+        public Random random = new Random();
         public DataStoring Data { get; set; }
         public Grid(DataStoring Data)
         {
