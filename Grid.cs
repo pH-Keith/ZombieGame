@@ -10,16 +10,28 @@ namespace ZombieGame
     {
         public Random random = new Random();
         public DataStoring Data { get; set; }
+        /// <summary>
+        /// Constructor that gives the grid the data it will require.
+        /// </summary>
+        /// <param name="Data"></param>
         public Grid(DataStoring Data)
         {
             this.Data = Data;
             tiles = new Tile[Data.MaxY, Data.MaxY];
         }
+        /// <summary>
+        /// Constructor that is empty for later use.
+        /// </summary>
         public Grid()
         {
 
         }
 
+        /// <summary>
+        /// Used for copying the grid's information from one grid to another.
+        /// The important information at least.
+        /// </summary>
+        /// <param name="grid"></param>
         public void Copy(Grid grid)
         {
             this.tiles = grid.tiles;
@@ -30,6 +42,9 @@ namespace ZombieGame
 
 
 
+        /// <summary>
+        /// Used to create the tiles with its information.
+        /// </summary>
         public void Fill()
         {
             for (int i = 0; i < Data.MaxX; i++)
@@ -39,6 +54,7 @@ namespace ZombieGame
                     tiles[j, i] = new Tile(j, i);
                 }
             }
+            // Lists to hold X and Y information of the zombies and human's location
             List<double> XZombcup = new List<double>();
             List<double> YZombcup = new List<double>();
             List<double> XHumacup = new List<double>();
@@ -48,8 +64,10 @@ namespace ZombieGame
             double tmp2;
             int tmp3;
             int tmp4;
+            // Variable to make sure it does not place a Agent on an ocupied grid.
             int safe = 0;
-            //GENERIC ZOMBIES
+            //Creates AI zombies and uses the lists to store information on
+            // their location.
             for (int i = 0; i <= Data.Zombies;)
             {
                 tmp1 = (random.Next(Data.MaxX));
@@ -77,7 +95,7 @@ namespace ZombieGame
                     safe = 0;
                 }
             }
-            // PLAYABLE ZOMBIES
+            // Playable zombie generation.
             for (int i = 0; i < Data.PZombies; i++)
             {
                 int rng = random.Next(0, XZombcup.Count - 1);
@@ -90,6 +108,7 @@ namespace ZombieGame
                 YZombcup.RemoveAt(rng);
             }
 
+            // AI human generation.
             for (int i = 0; i < Data.Humans;)
             {
                 tmp1 = (random.Next(Data.MaxX));
@@ -117,7 +136,7 @@ namespace ZombieGame
                     safe = 0;
                 }
             }
-            //PLAYABLE ZOMBIES
+            // Playable human Generation.
             for (int i = 0; i < Data.PHumans; i++)
             {
                 int rng = random.Next(0, XHumacup.Count - 1);

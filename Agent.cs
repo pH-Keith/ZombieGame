@@ -46,24 +46,21 @@ namespace ZombieGame
             this.Exists = true;
             this.Id = id;
         }
-        public Agent(bool Playable)
-        {
-            this.Playable = Playable;
-            if (Infected == 0)
-            {
-                Icon = "P";
-            }
-            if (Infected == 0)
-            {
-                Icon = "Z";
-            }
-        }
+        /// <summary>
+        /// Used to change the agent's infected status.
+        /// </summary>
         public void Zombify()
         {
             Icon = "z";
             Playable = false;
             Infected = 1;
         }
+        /// <summary>
+        /// Used to copy the Agent's information from one to another.
+        /// </summary>
+        /// <param name="agent"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void Copy(Agent agent, int x, int y)
         {
             this.Id = agent.Id;
@@ -76,22 +73,38 @@ namespace ZombieGame
             this.Icon = agent.Icon;
             this.Moved = true;
         }
+        /// <summary>
+        /// Self explanatory.
+        /// </summary>
         public void MakePlayable()
         {
             this.Playable = true;
         }
 
+        /// <summary>
+        /// Returns the id of the unit in HEX in a string.
+        /// </summary>
+        /// <returns></returns>
         public string IdString()
         {
             string result = Id.ToString("X2");
             return result;
         }
+        /// <summary>
+        /// Creates the agent with just the X and Y, so it can be filled later.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="Y"></param>
         public Agent(int x, int Y)
         {
             Exists = false;
             this.X = x;
             this.Y = Y;
         }
+        /// <summary>
+        /// Used to give the renderer what it requires to render properly.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             string tmp = null;
@@ -101,29 +114,40 @@ namespace ZombieGame
                 tmp += "-";
             return tmp;
         }
+        /// <summary>
+        /// Creates "empty" agent.
+        /// </summary>
         public Agent()
         {
             this.Exists = false;
         }
+        /// <summary>
+        /// Handles all of the player movement. Returns a grid which is modified
+        /// with the players wish.
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="renderer"></param>
+        /// <returns></returns>
         public Grid Movement(Grid grid, Renderer renderer)
         {
             this.Moved = true;
-            // CHANGE ALL OF THESE ABSOLUTE VALUES LATER.
+            // Sets up everything required.
             for (bool i = false; i == false;)
             {
                 Console.Clear();
                 Selected = true;
-                renderer.RenderGame(Convert.ToInt32(Infected) ,grid, X, Y);
+                renderer.RenderGame(Convert.ToInt32(Infected), grid, X, Y);
                 int tmpx = this.X;
                 int tmpy = this.Y;
                 ConsoleKeyInfo input;
                 input = Console.ReadKey();
+                // Handles all of the 8 directional inputs possible.
                 switch (input.KeyChar)
                 {
                     case 'w':
                         if (Y != 0)
                         {
-                            if(grid.tiles[this.X, this.Y - 1].Agents.Moved == false && grid.tiles[this.X, this.Y - 1].Agents.Exists == false)
+                            if (grid.tiles[this.X, this.Y - 1].Agents.Moved == false && grid.tiles[this.X, this.Y - 1].Agents.Exists == false)
                             {
                                 Y--;
                                 Moved = true;
@@ -359,7 +383,10 @@ namespace ZombieGame
             }
             return grid;
         }
-
+        /// <summary>
+        /// Used to add the description of the Agent.
+        /// </summary>
+        /// <returns></returns>
         public string Description()
         {
             string tmp = "";
@@ -379,190 +406,6 @@ namespace ZombieGame
                 tmp += "You see nothing there.";
             }
             return tmp;
-        }
-        /*
-        public Grid AIMovement(Grid grid)
-        {
-            this.Moved = true;
-            bool attacked = false;
-            // CHANGE ALL OF THESE ABSOLUTE VALUES LATER.
-            for (bool i = false; i == false;)
-            {
-                if (infected = 1)
-                {
-                    for (int p = -1; p <= 1; p++)
-                    {
-                        if (X == grid.Data.MaxX - 1 && p == 1)
-                        {
-                        }
-                        else if (X == 0 && p == -1)
-                        {
-                        }
-                        else
-                        {
-                            for (int l = -1; l <= 1; l++)
-                            {
-                                if (Y == grid.Data.MaxY - 1 && l == 1)
-                                {
-                                }
-                                else if (Y == 0 && l == -1)
-                                {
-                                }
-                                else if (Y == 0 && l == 0)
-                                {
-
-                                }
-                                else if (grid.tiles[X + p, Y + l].Agents.infected = 0 && grid.tiles[X + p, Y + l].Agents.Exists)
-                                {
-                                    grid.tiles[X + p, Y + l].Agents.Zombify();
-                                    attacked = true;
-                                }
-                            }
-                        }
-                    }
-                }
-                int tmpx = this.X;
-                int tmpy = this.Y;
-                if (!attacked)
-                {
-                    switch (grid.random.Next(1, 8))
-                    {
-                        case '1':
-                            if (Y != 0)
-                            {
-                                if (grid.tiles[this.X, this.Y - 1].Agents.Moved == false && grid.tiles[this.X, this.Y - 1].Agents.Exists == false)
-                                {
-                                    Y--;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                        case '2':
-                            if (Y != 0 && X != 0 && grid.tiles[this.X - 1, this.Y - 1].Agents.Exists == false)
-                            {
-                                if (grid.tiles[this.X - 1, this.Y - 1].Agents.Moved == false)
-                                {
-                                    Y--;
-                                    X--;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                        case '3':
-                            if (Y != grid.Data.MaxY && X != 0 && grid.tiles[this.X - 1, this.Y + 1].Agents.Exists == false)
-                            {
-                                if (grid.tiles[this.X - 1, this.Y + 1].Agents.Moved == false)
-                                {
-                                    Y++;
-                                    X--;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                        case '4':
-                            if (X != 0 && grid.tiles[this.X - 1, this.Y].Agents.Exists == false)
-                            {
-                                if (grid.tiles[this.X - 1, this.Y].Agents.Moved == false)
-                                {
-                                    X--;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                        case '5':
-                            if (Y != grid.Data.MaxY - 1 && grid.tiles[this.X, this.Y + 1].Agents.Exists == false)
-                            {
-                                if (grid.tiles[this.X, this.Y + 1].Agents.Moved == false)
-                                {
-                                    Y++;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                        case '6':
-                            if (Y != grid.Data.MaxY && X != grid.Data.MaxX && grid.tiles[this.X + 1, this.Y + 1].Agents.Exists == false)
-                            {
-                                if (grid.tiles[this.X + 1, this.Y + 1].Agents.Moved == false)
-                                {
-                                    Y++;
-                                    X++;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                        case '7':
-                            if (Y != 0 && X != grid.Data.MaxX && grid.tiles[this.X + 1, this.Y - 1].Agents.Exists == false)
-                            {
-                                if (grid.tiles[this.X + 1, this.Y - 1].Agents.Moved == false)
-                                {
-                                    Y--;
-                                    X++;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                        case '8':
-                            if (X != grid.Data.MaxX - 1 && grid.tiles[this.X + 1, this.Y].Agents.Exists == false)
-                            {
-                                if (grid.tiles[this.X + 1, this.Y].Agents.Moved == false)
-                                {
-                                    X++;
-                                    Moved = true;
-                                    grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
-                                    Exists = false;
-                                    i = true;
-                                }
-                            }
-                            break;
-                    }
-                }
-            }
-            return grid;
-        } */
-        public bool Confirm()
-        {
-            bool check = false;
-            for (bool i = false; i == false;)
-            {
-                Console.WriteLine("Is this the outcome you wish? y or n");
-                string answer = Console.ReadLine();
-                if (answer == "y" || answer == "Y")
-                {
-                    check = true;
-                    i = true;
-                }
-                else if (answer == "n" || answer == "N")
-                {
-                    check = false;
-                    i = true;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid Input.");
-                }
-            }
-            return check;
         }
     }
 }

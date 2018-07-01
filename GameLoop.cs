@@ -12,6 +12,11 @@ namespace ZombieGame
         Grid grid = new Grid();
         Renderer renderer = new Renderer();
         GameManager gamemanager = new GameManager();
+        /// <summary>
+        /// Constructor to initialize all of its components.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="grid"></param>
         public GameLoop(DataStoring data, Grid grid)
         {
             this.data = data;
@@ -20,6 +25,9 @@ namespace ZombieGame
             gamemanager = new GameManager(grid, data);
 
         }
+        /// <summary>
+        /// Starts the gameLoop and keeps it until max turns are done.
+        /// </summary>
         public void GameLoopStart()
         {
             renderer.RenderMenu();
@@ -51,6 +59,7 @@ namespace ZombieGame
                     Console.WriteLine("SIMULATION FINISHED.");
                     Console.WriteLine("Remaining Survivors: " + Survivors);
                     Console.WriteLine("Total Zombies: " + Zombies);
+                    Environment.Exit(0);
                 }
             }
         }

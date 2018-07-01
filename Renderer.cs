@@ -9,16 +9,25 @@ namespace ZombieGame
     class Renderer
     {
         string tmpL;
-
+        /// <summary>
+        /// Initializing with Data.
+        /// </summary>
+        /// <param name="data"></param>
         public Renderer(DataStoring data)
         {
             this.data = data;
         }
+        /// <summary>
+        /// Empty initializer so it can be later added the data.
+        /// </summary>
         public Renderer()
         {
 
         }
         DataStoring data = new DataStoring();
+        /// <summary>
+        /// Renders the menu.
+        /// </summary>
         public void RenderMenu()
         {
             Console.WriteLine("--------------------Welcome!----------------------");
@@ -35,6 +44,13 @@ namespace ZombieGame
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Renders the contextual information given.
+        /// </summary>
+        /// <param name="infected"></param>
+        /// <param name="grid"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
         public void RenderDirections(int infected, Grid grid, int X, int Y)
         {
             string tmp = "";
@@ -135,7 +151,13 @@ namespace ZombieGame
                 Console.Write(tmp);
             }
         }
-
+        /// <summary>
+        /// Renders the game's grid and its Agents.
+        /// </summary>
+        /// <param name="PO"></param>
+        /// <param name="grid"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
         public void RenderGame(int PO ,Grid grid, int X, int Y)
         {
             for (int i = 0; i < data.MaxX; i++)

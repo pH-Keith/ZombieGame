@@ -12,7 +12,7 @@ namespace ZombieGame
         {
             DataStoring data = new DataStoring();
             Console.OutputEncoding = Encoding.UTF8;
-            /*
+            // Code for console command inputs.
             for (int i = 0; i >= 13; i++)
             {
                 if(args[i] == "-x")
@@ -44,8 +44,6 @@ namespace ZombieGame
                     data.MaxTurn = Convert.ToInt32(args[i + 1]);
                 }
             }
-        }
-        */
             Grid grid = new Grid(data);
             grid.Fill();
             Renderer renderer = new Renderer(data);

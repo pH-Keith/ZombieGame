@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace ZombieGame
 {
+    /// <summary>
+    /// Handles most of the gamemanagment for example turn order etc.
+    /// </summary>
     class GameManager
     {
         DataStoring data = new DataStoring();
         Grid grid = new Grid();
-        bool auto = false;
         public int survivors = 0;
         public int zombies = 0;
         public GameManager(Grid grid, DataStoring data)
@@ -23,6 +25,11 @@ namespace ZombieGame
 
         }
         List<Agent> AIList = new List<Agent>();
+        /// <summary>
+        /// Main Method that will take care of the turn order and call functions when required.
+        /// </summary>
+        /// <param name="renderer"></param>
+        /// <returns></returns>
         public Grid ManageGame(Renderer renderer)
         {
             this.zombies = 0;
@@ -50,15 +57,14 @@ namespace ZombieGame
                     }
                 }
             }
-           
             grid.Copy(AI.AIMovementent(grid, AIList));
-                for (int i = 0; i < data.MaxX; i++)
+            for (int i = 0; i < data.MaxX; i++)
+            {
+                for (int j = 0; j < data.MaxY; j++)
                 {
-                    for (int j = 0; j < data.MaxY; j++)
-                    {
-                        grid.tiles[j, i].Agents.Moved = false;
-                    }
+                    grid.tiles[j, i].Agents.Moved = false;
                 }
+            }
             AIList.Clear();
             if (survivors == 0)
             {

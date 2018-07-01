@@ -6,15 +6,24 @@ using System.Threading.Tasks;
 
 namespace ZombieGame
 {
+    /// <summary>
+    /// Class dedicated to handling AI.
+    /// </summary>
     class AIMovement
     {
+        /// <summary>
+        /// Used to Handle all of the AI of the game.
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="AgentList"></param>
+        /// <returns></returns>
         public Grid AIMovementent(Grid grid, List<Agent> AgentList)
         {
             foreach (Agent agents in AgentList)
             {
                 agents.Moved = true;
                 bool attacked = false;
-                // CHANGE ALL OF THESE ABSOLUTE VALUES LATER.
+                // First checks if it can infect Agents around it. If so ends its turn.
                 if (agents.Infected == 1)
                 {
                     for (int p = -1; p <= 1; p++)
@@ -50,13 +59,16 @@ namespace ZombieGame
                         }
                     }
                 }
-                for (bool i = false; i == false;)
+                // If it has already attacked it will skip most of this part.
+                if (!attacked)
+                {
+                    for (bool i = false; i == false;)
                 {
                     int tmpx = agents.X;
                     int tmpy = agents.Y;
                     int rng = grid.random.Next(8);
-                    if (!attacked)
-                    {
+                        // Switches that individualy does their positioning, alot
+                        // of copy paste.
                         switch (rng)
                         {
                             case 1:
@@ -203,8 +215,8 @@ namespace ZombieGame
                                 }
                                 break;
                         }
+                        i = true;
                     }
-                    i = true;
                 }
             }
             return grid;
