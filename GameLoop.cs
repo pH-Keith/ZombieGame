@@ -37,11 +37,11 @@ namespace ZombieGame
                     {
                         for (int k = 0; k < data.MaxY; k++)
                         {
-                            if(grid.tiles[j, k].Agents.Infected == true && grid.tiles[j, k].Agents.Exists == true)
+                            if(grid.tiles[j, k].Agents.Infected == 1 && grid.tiles[j, k].Agents.Exists == true)
                             {
                                 Zombies++;
                             }
-                            if (grid.tiles[j, k].Agents.Infected == false && grid.tiles[j, k].Agents.Exists == true)
+                            if (grid.tiles[j, k].Agents.Infected == 0 && grid.tiles[j, k].Agents.Exists == true)
                             {
                                 Survivors++;
                             }

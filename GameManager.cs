@@ -11,6 +11,8 @@ namespace ZombieGame
         DataStoring data = new DataStoring();
         Grid grid = new Grid();
         bool auto = false;
+        public int survivors = 0;
+        public int zombies = 0;
         public GameManager(Grid grid, DataStoring data)
         {
             this.data = data;
@@ -23,59 +25,33 @@ namespace ZombieGame
         List<Agent> AIList = new List<Agent>();
         public Grid ManageGame(Renderer renderer)
         {
-            if (!auto)
+            this.zombies = 0;
+            this.survivors = 0;
+            AIMovement AI = new AIMovement();
+            for (int i = 0; i < data.MaxX; i++)
             {
-                bool found = false;
-                for (int i = 0; i < data.MaxX; i++)
+                for (int j = 0; j < data.MaxY; j++)
                 {
-                    for (int j = 0; j < data.MaxY; j++)
+                    if (grid.tiles[j, i].Agents.Playable == true && grid.tiles[j, i].Agents.Moved == false && grid.tiles[j, i].Agents.Exists == true)
                     {
-                        if (grid.tiles[j, i].Agents.Playable)
-                        {
-                            found = true;
-                        }
+                        grid.Copy(grid.tiles[j, i].Agents.Movement(grid, renderer));
                     }
-                }
-                if (!found)
-                {
-                    auto = true;
+                    else if (grid.tiles[j, i].Agents.Exists)
+                    {
+                        if (grid.tiles[j, i].Agents.Infected == 1)
+                        {
+                            zombies += 1;
+                        }
+                        else if (grid.tiles[j, i].Agents.Infected == 0)
+                        {
+                            survivors += 1;
+                        }
+                        AIList.Add(grid.tiles[j, i].Agents);
+                    }
                 }
             }
-            if(!auto)
-            {
-                for (int i = 0; i < data.MaxX; i++)
-                {
-                    for (int j = 0; j < data.MaxY; j++)
-                    {
-                        if (grid.tiles[j, i].Agents.Playable && !grid.tiles[j, i].Agents.Moved && grid.tiles[j, i].Agents.Exists)
-                        {
-                            grid.Copy(grid.tiles[j, i].Agents.Movement(grid, renderer));
-                            grid.tiles[j, i].Agents.Moved = false;
-                        }
-                        else if(grid.tiles[j, i].Agents.Exists)
-                        {
-                            AIList.Add(grid.tiles[j, i].Agents);
-                        }
-                    }
-                }
-                AIMovement AI = new AIMovement();
-                AI.AIMovementent(grid, AIList);
-
-            }
-            else
-            {
-                for (int i = 0; i < data.MaxX; i++)
-                {
-                    for (int j = 0; j < data.MaxY; j++)
-                    {
-                        if (grid.tiles[j, i].Agents.Moved == false && grid.tiles[j, i].Agents.Exists)
-                        {
-                            AIList.Add(grid.tiles[j, i].Agents);
-                        }
-                    }
-                }
-                AIMovement AI = new AIMovement();
-                AI.AIMovementent(grid, AIList);
+           
+            grid.Copy(AI.AIMovementent(grid, AIList));
                 for (int i = 0; i < data.MaxX; i++)
                 {
                     for (int j = 0; j < data.MaxY; j++)
@@ -83,10 +59,16 @@ namespace ZombieGame
                         grid.tiles[j, i].Agents.Moved = false;
                     }
                 }
-                Console.ReadKey();
-            }
             AIList.Clear();
-        return grid;
+            if (survivors == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("SIMULATION FINISHED.");
+                Console.WriteLine("Zombies are the only Agents left. Press any Key to close");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+            return grid;
         }
     }
 }

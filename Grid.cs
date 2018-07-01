@@ -68,7 +68,7 @@ namespace ZombieGame
                     XZombcup.Add(tmp3);
                     tmp4 = Convert.ToInt32(Math.Round(tmp2, MidpointRounding.ToEven));
                     YZombcup.Add(tmp4);
-                    tiles[tmp3, tmp4].Agents = new Agent(true, false, tmp3, tmp4, id);
+                    tiles[tmp3, tmp4].Agents = new Agent(1, false, tmp3, tmp4, id);
                     id++;
                     i++;
                 }
@@ -78,18 +78,18 @@ namespace ZombieGame
                 }
             }
             // PLAYABLE ZOMBIES
-            for(int i = 0; i < Data.PZombies; i++)
+            for (int i = 0; i < Data.PZombies; i++)
             {
                 int rng = random.Next(0, XZombcup.Count - 1);
                 double[] Xarray = XZombcup.ToArray();
                 double[] Yarray = YZombcup.ToArray();
                 double xtmp = Xarray[rng];
                 double ytmp = Yarray[rng];
-                tiles[Convert.ToInt32(xtmp), Convert.ToInt32(ytmp)].Agents.Playable = true;
+                tiles[Convert.ToInt32(xtmp), Convert.ToInt32(ytmp)].Agents.MakePlayable();
                 XZombcup.RemoveAt(rng);
                 YZombcup.RemoveAt(rng);
             }
-            
+
             for (int i = 0; i < Data.Humans;)
             {
                 tmp1 = (random.Next(Data.MaxX));
@@ -102,13 +102,13 @@ namespace ZombieGame
                 {
                     safe++;
                 }
-                if(safe > 0)
+                if (safe > 0)
                 {
                     tmp3 = Convert.ToInt32(Math.Round(tmp1, MidpointRounding.ToEven));
                     XHumacup.Add(tmp3);
                     tmp4 = Convert.ToInt32(Math.Round(tmp2, MidpointRounding.ToEven));
                     YHumacup.Add(tmp4);
-                    tiles[tmp3, tmp4].Agents = new Agent(false, false, tmp3, tmp4, id);
+                    tiles[tmp3, tmp4].Agents = new Agent(0, false, tmp3, tmp4, id);
                     id++;
                     i++;
                 }
@@ -116,6 +116,18 @@ namespace ZombieGame
                 {
                     safe = 0;
                 }
+            }
+            //PLAYABLE ZOMBIES
+            for (int i = 0; i < Data.PHumans; i++)
+            {
+                int rng = random.Next(0, XHumacup.Count - 1);
+                double[] Xarray = XHumacup.ToArray();
+                double[] Yarray = YHumacup.ToArray();
+                double xtmp = Xarray[rng];
+                double ytmp = Yarray[rng];
+                tiles[Convert.ToInt32(xtmp), Convert.ToInt32(ytmp)].Agents.MakePlayable();
+                XHumacup.RemoveAt(rng);
+                YHumacup.RemoveAt(rng);
             }
         }
     }

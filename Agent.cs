@@ -8,15 +8,13 @@ namespace ZombieGame
 {
     class Agent
     {
-
-
         /// <summary>
         /// True Equal Zombie, False Equal Human
         /// </summary>
-        public bool Infected { get; set; } = false;
+        public int Infected { get; set; }
         public int X;
         public int Y;
-        private int Id { get; set; } = -1;
+        public int Id { get; set; } = -1;
         public bool Moved = false;
         public bool Exists { get; set; }
         public bool Playable { get; set; }
@@ -30,14 +28,14 @@ namespace ZombieGame
         /// <param name="x"></param>
         /// <param name="Y"></param>
         /// <param name="id"></param>
-        public Agent(bool Infected, bool Playable, int x, int Y, int id)
+        public Agent(int Infected, bool Playable, int x, int Y, int id)
         {
             this.Infected = Infected;
-            if (Infected == true)
+            if (Infected == 1)
             {
                 Icon = "z";
             }
-            if (Infected == false)
+            if (Infected == 0)
             {
                 Icon = "p";
             }
@@ -51,11 +49,11 @@ namespace ZombieGame
         public Agent(bool Playable)
         {
             this.Playable = Playable;
-            if (Infected == false)
+            if (Infected == 0)
             {
                 Icon = "P";
             }
-            if (Infected == true)
+            if (Infected == 0)
             {
                 Icon = "Z";
             }
@@ -64,7 +62,7 @@ namespace ZombieGame
         {
             Icon = "z";
             Playable = false;
-            Infected = true;
+            Infected = 1;
         }
         public void Copy(Agent agent, int x, int y)
         {
@@ -73,8 +71,14 @@ namespace ZombieGame
             this.Y = y;
             this.Infected = agent.Infected;
             this.Playable = agent.Playable;
+            this.Selected = agent.Selected;
             this.Exists = true;
             this.Icon = agent.Icon;
+            this.Moved = true;
+        }
+        public void MakePlayable()
+        {
+            this.Playable = true;
         }
 
         public string IdString()
@@ -109,10 +113,12 @@ namespace ZombieGame
             {
                 Console.Clear();
                 Selected = true;
-                renderer.RenderGame(Infected ,grid, X, Y);
+                renderer.RenderGame(Convert.ToInt32(Infected) ,grid, X, Y);
                 int tmpx = this.X;
                 int tmpy = this.Y;
-                switch (Console.ReadKey().KeyChar)
+                ConsoleKeyInfo input;
+                input = Console.ReadKey();
+                switch (input.KeyChar)
                 {
                     case 'w':
                         if (Y != 0)
@@ -120,9 +126,10 @@ namespace ZombieGame
                             if(grid.tiles[this.X, this.Y - 1].Agents.Moved == false && grid.tiles[this.X, this.Y - 1].Agents.Exists == false)
                             {
                                 Y--;
-                                Selected = false;
                                 Moved = true;
                                 grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                grid.tiles[tmpx, tmpy].Agents.X = tmpx;
+                                grid.tiles[tmpx, tmpy].Agents.Y = tmpy;
                                 Exists = false;
                                 i = true;
                             }
@@ -142,9 +149,10 @@ namespace ZombieGame
                                 {
                                     Y--;
                                     X--;
-                                    Selected = false;
                                     Moved = true;
                                     grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                    grid.tiles[tmpx, tmpy].Agents.X = tmpx;
+                                    grid.tiles[tmpx, tmpy].Agents.Y = tmpy;
                                     Exists = false;
                                     i = true;
                                 }
@@ -166,9 +174,10 @@ namespace ZombieGame
                                     {
                                         Y++;
                                         X--;
-                                        Selected = false;
                                         Moved = true;
                                         grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        grid.tiles[tmpx, tmpy].Agents.X = tmpx;
+                                        grid.tiles[tmpx, tmpy].Agents.Y = tmpy;
                                         Exists = false;
                                         i = true;
                                     }
@@ -190,9 +199,10 @@ namespace ZombieGame
                                     if (grid.tiles[this.X - 1, this.Y].Agents.Moved == false)
                                     {
                                         X--;
-                                        Selected = false;
                                         Moved = true;
                                         grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        grid.tiles[tmpx, tmpy].Agents.X = tmpx;
+                                        grid.tiles[tmpx, tmpy].Agents.Y = tmpy;
                                         Exists = false;
                                         i = true;
                                     }
@@ -215,9 +225,10 @@ namespace ZombieGame
                                     if (grid.tiles[this.X, this.Y + 1].Agents.Moved == false)
                                     {
                                         Y++;
-                                        Selected = false;
                                         Moved = true;
                                         grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        grid.tiles[tmpx, tmpy].Agents.X = tmpx;
+                                        grid.tiles[tmpx, tmpy].Agents.Y = tmpy;
                                         Exists = false;
                                         i = true;
                                     }
@@ -240,9 +251,10 @@ namespace ZombieGame
                                     {
                                         Y++;
                                         X++;
-                                        Selected = false;
                                         Moved = true;
                                         grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        grid.tiles[tmpx, tmpy].Agents.X = tmpx;
+                                        grid.tiles[tmpx, tmpy].Agents.Y = tmpy;
                                         Exists = false;
                                         i = true;
                                     }
@@ -265,9 +277,10 @@ namespace ZombieGame
                                     {
                                         Y--;
                                         X++;
-                                        Selected = false;
                                         Moved = true;
                                         grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
+                                        grid.tiles[tmpx, tmpy].Agents.X = tmpx;
+                                        grid.tiles[tmpx, tmpy].Agents.Y = tmpy;
                                         Exists = false;
                                         i = true;
                                     }
@@ -289,7 +302,6 @@ namespace ZombieGame
                                     if (grid.tiles[this.X + 1, this.Y].Agents.Moved == false)
                                     {
                                         X++;
-                                        Selected = false;
                                         Moved = true;
                                         grid.tiles[this.X, this.Y].Agents.Copy(this, X, Y);
                                         Exists = false;
@@ -305,7 +317,7 @@ namespace ZombieGame
                         }
                         break;
                     case 'f':
-                        if (Infected == true)
+                        if (Infected == 1)
                         {
                             for (int p = -1; p <= 1; p++)
                             {
@@ -329,7 +341,7 @@ namespace ZombieGame
                                         {
 
                                         }
-                                        else if (grid.tiles[X + p, Y + l].Agents.Infected == false && grid.tiles[X + p, Y + l].Agents.Exists)
+                                        else if (grid.tiles[X + p, Y + l].Agents.Infected == 0 && grid.tiles[X + p, Y + l].Agents.Exists)
                                         {
                                             grid.tiles[X + p, Y + l].Agents.Zombify();
                                         }
@@ -353,11 +365,11 @@ namespace ZombieGame
             string tmp = "";
             if (Exists == true)
             {
-                if (Infected == true)
+                if (Infected == 1)
                 {
                     tmp += "You see a zombie.";
                 }
-                else if (Infected == false)
+                else if (Infected == 0)
                 {
                     tmp += "You see a human.";
                 }
@@ -376,7 +388,7 @@ namespace ZombieGame
             // CHANGE ALL OF THESE ABSOLUTE VALUES LATER.
             for (bool i = false; i == false;)
             {
-                if (Infected == true)
+                if (infected = 1)
                 {
                     for (int p = -1; p <= 1; p++)
                     {
@@ -400,7 +412,7 @@ namespace ZombieGame
                                 {
 
                                 }
-                                else if (grid.tiles[X + p, Y + l].Agents.Infected == false && grid.tiles[X + p, Y + l].Agents.Exists)
+                                else if (grid.tiles[X + p, Y + l].Agents.infected = 0 && grid.tiles[X + p, Y + l].Agents.Exists)
                                 {
                                     grid.tiles[X + p, Y + l].Agents.Zombify();
                                     attacked = true;

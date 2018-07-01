@@ -35,90 +35,108 @@ namespace ZombieGame
             Console.ReadKey();
         }
 
-        public void RenderDirections(bool infected, Grid grid, int X, int Y)
+        public void RenderDirections(int infected, Grid grid, int X, int Y)
         {
             string tmp = "";
-            if (infected)
+            if (infected == 1)
             {
-                tmp += "You are infected. \n";
+                tmp += "You are infected Nº " + grid.tiles[X, Y].Agents.IdString() +  " \n";
             }
-            for (int p = -1; p <= 1; p++)
+            else if (infected == 0)
             {
-                if (X == grid.Data.MaxX - 1 && p == 1)
-                {
-                }
-                else if (X == 0 && p == -1)
-                {
-                }
-                else
-                {
-                    for (int l = -1; l <= 1; l++)
-                    {
-                        if (Y == grid.Data.MaxY - 1 && l == 1)
-                        {
-                        }
-                        else if (Y == 0 && l == -1)
-                        {
-                        }
-                        else if (Y == 0 && l == 0)
-                        {
+                tmp += "You are a Human Nº " + grid.tiles[X, Y].Agents.IdString() + " \n";
+            }
+            else if (infected == 2)
+            {
+                tmp += "You are in Auto Mode. Press Any key for next turn.";
 
-                        }
-                        else if (p == -1 && l == -1)
+            }
+            if (infected == 2)
+            {
+                Console.Write(tmp);
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                for (int p = -1; p <= 1; p++)
+                {
+                    if (X == grid.Data.MaxX - 1 && p == 1)
+                    {
+                    }
+                    else if (X == 0 && p == -1)
+                    {
+                    }
+                    else
+                    {
+                        for (int l = -1; l <= 1; l++)
                         {
-                            tmp += "(q) NW: ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
-                        }
-                        else if (p == -1 && l == 0)
-                        {
-                            tmp += "(a) W:  ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
-                        }
-                        else if (p == -1 && l == 1)
-                        {
-                            tmp += "(q) SW: ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
-                        }
-                        else if (p == 0 && l == -1)
-                        {
-                            tmp += "(w) N:  ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
-                        }
-                        else if (p == 0 && l == 1)
-                        {
-                            tmp += "(x) S:  ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
-                        }
-                        else if (p == 1 && l == -1)
-                        {
-                            tmp += "(e) NE: ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
-                        }
-                        else if (p == -1 && l == 0)
-                        {
-                            tmp += "(d) E:  ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
-                        }
-                        else if (p == -1 && l == 11)
-                        {
-                            tmp += "(c) SE: ";
-                            tmp += grid.tiles[X + p, Y + l].Agents.Description();
-                            tmp += "\n";
+                            if (Y == grid.Data.MaxY - 1 && l == 1)
+                            {
+                            }
+                            else if (Y == 0 && l == -1)
+                            {
+                            }
+                            else if (Y == 0 && l == 0)
+                            {
+
+                            }
+                            else if (p == -1 && l == -1)
+                            {
+                                tmp += "(q) NW: ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
+                            else if (p == -1 && l == 0)
+                            {
+                                tmp += "(a) W:  ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
+                            else if (p == -1 && l == 1)
+                            {
+                                tmp += "(q) SW: ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
+                            else if (p == 0 && l == -1)
+                            {
+                                tmp += "(w) N:  ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
+                            else if (p == 0 && l == 1)
+                            {
+                                tmp += "(x) S:  ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
+                            else if (p == 1 && l == -1)
+                            {
+                                tmp += "(e) NE: ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
+                            else if (p == -1 && l == 0)
+                            {
+                                tmp += "(d) E:  ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
+                            else if (p == -1 && l == 11)
+                            {
+                                tmp += "(c) SE: ";
+                                tmp += grid.tiles[X + p, Y + l].Agents.Description();
+                                tmp += "\n";
+                            }
                         }
                     }
                 }
+                Console.Write(tmp);
             }
-            Console.Write(tmp);
         }
 
-        public void RenderGame(bool infected ,Grid grid, int X, int Y)
+        public void RenderGame(int PO ,Grid grid, int X, int Y)
         {
             for (int i = 0; i < data.MaxX; i++)
             {
@@ -127,19 +145,20 @@ namespace ZombieGame
                     tmpL = grid.tiles[j, i].Agents.Icon + grid.tiles[j, i].Agents.IdString();
                     if (grid.tiles[j, i].Agents.Exists)
                     {
-                        if (grid.tiles[j, i].Agents.Infected == true &&
+                        if (grid.tiles[j, i].Agents.Infected == 1 &&
                         grid.tiles[j, i].Agents.Playable == true)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkRed;
                             Console.ForegroundColor = ConsoleColor.Black;
                         }
-                        else if (grid.tiles[j, i].Agents.Infected == true &&
+                        else if (grid.tiles[j, i].Agents.Infected == 1 &&
                             grid.tiles[j, i].Agents.Playable == false)
                         {
                             if(grid.tiles[j, i].Agents.Selected == true)
                             {
                                 Console.BackgroundColor = ConsoleColor.Red;
                                 Console.ForegroundColor = ConsoleColor.White;
+                                grid.tiles[j, i].Agents.Selected = false;
                             }
                             else
                             {
@@ -147,13 +166,13 @@ namespace ZombieGame
                                 Console.ForegroundColor = ConsoleColor.White;
                             }
                         }
-                        else if (grid.tiles[j, i].Agents.Infected == false &&
+                        else if (grid.tiles[j, i].Agents.Infected == 0 &&
                             grid.tiles[j, i].Agents.Playable == true)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkGreen;
                             Console.ForegroundColor = ConsoleColor.Black;
                         }
-                        else if (grid.tiles[j, i].Agents.Infected == false &&
+                        else if (grid.tiles[j, i].Agents.Infected == 0 &&
                             grid.tiles[j, i].Agents.Playable == false)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkGreen;
@@ -173,7 +192,7 @@ namespace ZombieGame
 
                 Console.Write("\n \n");
             }
-            RenderDirections(infected ,grid, X, Y);
+            RenderDirections(PO ,grid, X, Y);
         }
     }
 }
